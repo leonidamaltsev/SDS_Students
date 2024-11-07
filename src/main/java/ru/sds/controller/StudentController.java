@@ -13,19 +13,19 @@ import java.util.List;
 public class StudentController {
     private final StudentRepository students;
 
-    public StudentController(final StudentRepository students) {
+    public StudentController(StudentRepository students) {
         this.students = students;
     }
 
     @GetMapping("/")
     public List<Student> findAll() {
-        return (List<Student>) this.students.findAll();
+        return students.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Student> findById(@PathVariable int id) {
         var student = this.students.findById(id);
-        return new ResponseEntity<Student>(
+        return new ResponseEntity<>(
                 student.orElse(new Student()),
                 student.isPresent() ? HttpStatus.OK : HttpStatus.NOT_FOUND
         );
@@ -33,7 +33,7 @@ public class StudentController {
 
     @PostMapping("/")
     public ResponseEntity<Student> create(@RequestBody Student student) {
-        return new ResponseEntity<Student>(
+        return new ResponseEntity<>(
                 this.students.save(student),
                 HttpStatus.CREATED
         );
